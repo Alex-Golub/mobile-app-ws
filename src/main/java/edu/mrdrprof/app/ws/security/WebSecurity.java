@@ -37,12 +37,19 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             .anyRequest()
             .authenticated()
             .and()
-            .addFilter(new AuthenticationFilter(authenticationManager()));
+            .addFilter(authenticationFilter());
   }
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.userDetailsService(userService)
             .passwordEncoder(bCryptPasswordEncoder);
+  }
+
+  /** change spring default /login URL to /users/login */
+  public AuthenticationFilter authenticationFilter() throws Exception {
+    AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+    filter.setFilterProcessesUrl("/users/login");
+    return filter;
   }
 }
