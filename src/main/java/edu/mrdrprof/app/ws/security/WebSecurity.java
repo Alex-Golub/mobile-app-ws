@@ -27,7 +27,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
   /**
    * Configure which entry points will be permitted,
-   * authentication filters
+   * authentication filters, authorization filters,
+   * convert from stateful to stateless (i.e. for each request
+   * user must provide token header thus preventing caching the token
+   * on the server side)
    */
   @Override
   protected void configure(HttpSecurity http) throws Exception {
