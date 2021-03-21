@@ -7,11 +7,13 @@ import edu.mrdrprof.app.ws.shared.Utils;
 import edu.mrdrprof.app.ws.shared.dto.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -46,9 +48,22 @@ public class UserServiceImpl implements UserService {
     return returnValue;
   }
 
+  /**
+   * Method will be triggered when client send POST
+   * request with email and password.
+   * sfw will check if there is a user with such email in the DB,
+   * if user found then client is granted access token, otherwise
+   * access if forbidden
+   */
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    // TODO: tell spring by what parameter its should load a user
-    return null;
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    UserEntity userEntity = userRepository.findUserEntityByEmail(email);
+    if (userEntity == null) {
+      throw new UsernameNotFoundException("There is no such user with email " + email);
+    }
+
+    return new User(userEntity.getEmail(),
+                    userEntity.getEncryptedPassword(),
+                    new ArrayList<>());
   }
 }
