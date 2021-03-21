@@ -5,7 +5,7 @@ package edu.mrdrprof.app.ws.security;
  * @since 20/03/2021 18:41
  */
 public class SecurityConstants {
-  public static final long EXPIRATION_TIME = 60 * 60 * 24 * 10; // token is valid for 10 days
+  public static final long EXPIRATION_TIME = 60 * 60 * 24 * 1000; // token is valid for 14 hours
 
   // adding headers to http response with token authorization
   public static final String HEADER_STRING = "Authorization";
