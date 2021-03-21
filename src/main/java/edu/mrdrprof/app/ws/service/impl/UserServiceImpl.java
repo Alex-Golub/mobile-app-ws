@@ -48,6 +48,18 @@ public class UserServiceImpl implements UserService {
     return returnValue;
   }
 
+  @Override
+  public UserDto getUserByEmail(String email) {
+    UserEntity UserEntity = userRepository.findUserEntityByEmail(email);
+    if (UserEntity == null) {
+      throw new UsernameNotFoundException("There is no user with email " + email);
+    }
+
+    UserDto userDto = new UserDto();
+    BeanUtils.copyProperties(UserEntity, userDto);
+    return userDto;
+  }
+
   /**
    * Method will be triggered when client send POST
    * request with email and password.

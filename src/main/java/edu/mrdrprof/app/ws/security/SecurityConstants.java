@@ -14,5 +14,5 @@ public class SecurityConstants {
   public static final String SIGN_UP_URL = "/users";
 
   // will be used to encrypt access token
-  public static final String TOKEN_SECRET = "kjfndlkn43li5mgk34354";
+  public static final String TOKEN_SECRET = "k41231jfndl52kn43li5mgk2fgd34354";
 }

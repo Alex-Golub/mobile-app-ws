@@ -21,19 +21,23 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 @AllArgsConstructor
 public class WebSecurity extends WebSecurityConfigurerAdapter {
-  /*private final UserDetailsService userDetailsService;*/
   private final UserService userService;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  /** configure which entry points will be permitted */
+  /**
+   * Configure which entry points will be permitted,
+   * authentication filters
+   */
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
             .authorizeRequests()
-            .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
+            .mvcMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
             .permitAll()
             .anyRequest()
-            .authenticated();
+            .authenticated()
+            .and()
+            .addFilter(new AuthenticationFilter(authenticationManager()));
   }
 
   @Override
