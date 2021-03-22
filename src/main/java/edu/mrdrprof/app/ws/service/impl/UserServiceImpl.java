@@ -1,5 +1,6 @@
 package edu.mrdrprof.app.ws.service.impl;
 
+import edu.mrdrprof.app.ws.ApplicationProperties;
 import edu.mrdrprof.app.ws.io.entity.UserEntity;
 import edu.mrdrprof.app.ws.repository.UserRepository;
 import edu.mrdrprof.app.ws.service.UserService;
@@ -14,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 /**
  * @author Mr.Dr.Professor
@@ -23,10 +23,11 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
-  private static final int PASSWORD_LENGTH = 30;
+  private static final int PUBLIC_USER_ID_LENGTH = 30;
   private final UserRepository userRepository;
   private final Utils utils;
   private final BCryptPasswordEncoder passwordEncoder;
+  private final ApplicationProperties applicationProperties;
 
   @Override
   public UserDto createUser(UserDto userDto) {
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
     userEntity = new UserEntity();
     BeanUtils.copyProperties(userDto, userEntity);
 
-    userEntity.setUserId(utils.generateUserId(PASSWORD_LENGTH));
+    userEntity.setUserId(utils.generateUserId(PUBLIC_USER_ID_LENGTH));
     userEntity.setEncryptedPassword(passwordEncoder.encode(userDto.getPassword()));
 
     UserEntity storedUserDetails = userRepository.save(userEntity);
