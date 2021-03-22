@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
+
 /**
  * @author Mr.Dr.Professor
  * @since 18/03/2021 21:08
@@ -18,7 +21,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
   private final UserService userService;
 
-  @GetMapping(path = "/{userId}")
+  @GetMapping(path = "/{userId}",
+              produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public UserRest getUser(@PathVariable String userId) {
     UserDto userDto = userService.getUserByUserId(userId);
     UserRest userRest = new UserRest();
@@ -26,7 +30,8 @@ public class UserController {
     return userRest;
   }
 
-  @PostMapping
+  @PostMapping(consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
+               produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public UserRest createUser(@RequestBody UserDetailRequestModel userDetails) {
     UserDto userDto = new UserDto();
     BeanUtils.copyProperties(userDetails, userDto);
