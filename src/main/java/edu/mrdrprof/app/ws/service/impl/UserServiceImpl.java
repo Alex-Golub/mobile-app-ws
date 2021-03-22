@@ -60,6 +60,18 @@ public class UserServiceImpl implements UserService {
     return userDto;
   }
 
+  @Override
+  public UserDto getUserByUserId(String userId) {
+    UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
+    if (userEntity == null) {
+      throw new RuntimeException("There is no such user with id " + userId);
+    }
+
+    UserDto userDto = new UserDto();
+    BeanUtils.copyProperties(userEntity, userDto);
+    return userDto;
+  }
+
   /**
    * Method will be triggered when client send POST
    * request with email and password.
