@@ -4,6 +4,9 @@ import edu.mrdrprof.app.ws.service.UserService;
 import edu.mrdrprof.app.ws.shared.dto.UserDto;
 import edu.mrdrprof.app.ws.ui.model.request.UserDetailsRequestModel;
 import edu.mrdrprof.app.ws.ui.model.request.UserUpdateRequestModel;
+import edu.mrdrprof.app.ws.ui.model.response.OperationRequestModel;
+import edu.mrdrprof.app.ws.ui.model.response.RequestOperationName;
+import edu.mrdrprof.app.ws.ui.model.response.RequestOperationStatus;
 import edu.mrdrprof.app.ws.ui.model.response.UserRest;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -48,7 +51,8 @@ public class UserController {
   @PutMapping(path = "/{userId}",
               consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
               produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
-  public UserRest updateUser(@PathVariable String userId, @Valid @RequestBody UserUpdateRequestModel userDetails) {
+  public UserRest updateUser(@PathVariable String userId,
+                             @Valid @RequestBody UserUpdateRequestModel userDetails) {
     UserDto userDto = new UserDto();
     BeanUtils.copyProperties(userDetails, userDto);
     UserDto updatedUser = userService.updateUser(userId, userDto);
@@ -59,9 +63,13 @@ public class UserController {
     return userRest;
   }
 
-  @DeleteMapping
-  public String deleteUser() {
-    return "deleteUser()";
-  }
+  @DeleteMapping(path = "/{userId}")
+  public OperationRequestModel deleteUser(@PathVariable String userId) {
+    OperationRequestModel operationRequestModel = new OperationRequestModel();
+    userService.deleteUser(userId);
 
+    operationRequestModel.setOperationName(RequestOperationName.DELETE.toString());
+    operationRequestModel.setOperationStatus(RequestOperationStatus.SUCCESS.toString());
+    return operationRequestModel;
+  }
 }

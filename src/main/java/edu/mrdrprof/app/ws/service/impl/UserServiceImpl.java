@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
   public UserDto createUser(UserDto userDto) {
     UserEntity userEntity = userRepository.findUserEntityByEmail(userDto.getEmail());
     if (userEntity != null) {
-      throw new UserServiceException(applicationProperties.getProperty("RECORD_ALREADY_EXISTS"));
+      throw new UserServiceException(applicationProperties.getProperty("recordAlreadyExists"));
     }
 
     userEntity = new UserEntity();
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
   public UserDto getUserByUserId(String userId) {
     UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
     if (userEntity == null) {
-      throw new UserServiceException(applicationProperties.getProperty("NO_RECORD_FOUND"));
+      throw new UserServiceException(applicationProperties.getProperty("noRecordFound"));
     }
 
     UserDto userDto = new UserDto();
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
   public UserDto updateUser(String userId, UserDto userDto) {
     UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
     if (userEntity == null) {
-      throw new UserServiceException(applicationProperties.getProperty("NO_RECORD_FOUND"));
+      throw new UserServiceException(applicationProperties.getProperty("couldNotUpdateRecord"));
     }
 
     userEntity.setFirstName(userDto.getFirstName());
@@ -88,6 +88,16 @@ public class UserServiceImpl implements UserService {
     BeanUtils.copyProperties(save, userDto);
 
     return userDto;
+  }
+
+  @Override
+  public void deleteUser(String userId) {
+    UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
+    if (userEntity == null) {
+      throw new UserServiceException(applicationProperties.getProperty("couldNotUpdateDelete"));
+    }
+
+    userRepository.delete(userEntity);
   }
 
   /**
