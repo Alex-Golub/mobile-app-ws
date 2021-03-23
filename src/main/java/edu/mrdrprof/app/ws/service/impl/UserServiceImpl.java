@@ -1,6 +1,7 @@
 package edu.mrdrprof.app.ws.service.impl;
 
 import edu.mrdrprof.app.ws.ApplicationProperties;
+import edu.mrdrprof.app.ws.exceptions.UserServiceException;
 import edu.mrdrprof.app.ws.io.entity.UserEntity;
 import edu.mrdrprof.app.ws.repository.UserRepository;
 import edu.mrdrprof.app.ws.service.UserService;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService {
   public UserDto createUser(UserDto userDto) {
     UserEntity userEntity = userRepository.findUserEntityByEmail(userDto.getEmail());
     if (userEntity != null) {
-      throw new RuntimeException("User with such email already exists");
+      throw new UserServiceException(applicationProperties.getProperty("RECORD_ALREADY_EXISTS"));
     }
 
     userEntity = new UserEntity();
@@ -65,11 +66,27 @@ public class UserServiceImpl implements UserService {
   public UserDto getUserByUserId(String userId) {
     UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
     if (userEntity == null) {
-      throw new RuntimeException("There is no such user with id " + userId);
+      throw new UserServiceException(applicationProperties.getProperty("NO_RECORD_FOUND"));
     }
 
     UserDto userDto = new UserDto();
     BeanUtils.copyProperties(userEntity, userDto);
+    return userDto;
+  }
+
+  @Override
+  public UserDto updateUser(String userId, UserDto userDto) {
+    UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
+    if (userEntity == null) {
+      throw new UserServiceException(applicationProperties.getProperty("NO_RECORD_FOUND"));
+    }
+
+    userEntity.setFirstName(userDto.getFirstName());
+    userEntity.setLastName(userDto.getLastName());
+
+    UserEntity save = userRepository.save(userEntity);
+    BeanUtils.copyProperties(save, userDto);
+
     return userDto;
   }
 

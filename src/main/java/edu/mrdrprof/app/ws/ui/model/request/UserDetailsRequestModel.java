@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserDetailRequestModel {
+public class UserDetailsRequestModel {
 
   @NotNull
   @NotEmpty(message = "field can't be empty")

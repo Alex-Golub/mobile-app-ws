@@ -2,7 +2,7 @@ package edu.mrdrprof.app.ws.ui.controller;
 
 import edu.mrdrprof.app.ws.service.UserService;
 import edu.mrdrprof.app.ws.shared.dto.UserDto;
-import edu.mrdrprof.app.ws.ui.model.request.UserDetailRequestModel;
+import edu.mrdrprof.app.ws.ui.model.request.UserDetailsRequestModel;
 import edu.mrdrprof.app.ws.ui.model.response.UserRest;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -32,7 +32,7 @@ public class UserController {
 
   @PostMapping(consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
                produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
-  public UserRest createUser(@RequestBody UserDetailRequestModel userDetails) {
+  public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) {
     UserDto userDto = new UserDto();
     BeanUtils.copyProperties(userDetails, userDto);
     UserDto storedUser = userService.createUser(userDto);
@@ -42,9 +42,18 @@ public class UserController {
     return userRest;
   }
 
-  @PutMapping
-  public String updateUser() {
-    return "updateUser()";
+  @PutMapping(path = "/{userId}",
+              consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
+              produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+  public UserRest updateUser(@PathVariable String userId, @RequestBody UserDetailsRequestModel userDetails) {
+    UserDto userDto = new UserDto();
+    BeanUtils.copyProperties(userDetails, userDto);
+    UserDto updatedUser = userService.updateUser(userId, userDto);
+
+    UserRest userRest = new UserRest();
+    BeanUtils.copyProperties(updatedUser, userRest);
+
+    return userRest;
   }
 
   @DeleteMapping
