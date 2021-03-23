@@ -10,9 +10,13 @@ import edu.mrdrprof.app.ws.ui.model.response.RequestOperationStatus;
 import edu.mrdrprof.app.ws.ui.model.response.UserRest;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
@@ -26,6 +30,22 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 @AllArgsConstructor // constructor autowiring
 public class UserController {
   private final UserService userService;
+
+  /** http://localhost:8080/users?page=1&limit=5 */
+  @GetMapping(produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+  public List<UserRest> getListOfUsers(@RequestParam(value = "page", defaultValue = "0") int page,
+                                       @RequestParam(value = "limit", defaultValue = "5") int limit) {
+    List<UserRest> list = new ArrayList<>();
+
+    List<UserDto> userDtoList = userService.getUsers(page, limit);
+    for (UserDto userDto : userDtoList) {
+      UserRest user = new UserRest();
+      BeanUtils.copyProperties(userDto, user);
+      list.add(user);
+    }
+
+    return list;
+  }
 
   @GetMapping(path = "/{userId}",
               produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})

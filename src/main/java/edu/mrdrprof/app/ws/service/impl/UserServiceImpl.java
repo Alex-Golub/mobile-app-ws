@@ -9,6 +9,9 @@ import edu.mrdrprof.app.ws.shared.Utils;
 import edu.mrdrprof.app.ws.shared.dto.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Mr.Dr.Professor
@@ -98,6 +102,31 @@ public class UserServiceImpl implements UserService {
     }
 
     userRepository.delete(userEntity);
+  }
+
+  /**
+   * Each request should return limited number of users entries rather
+   * then all of the users entries, thus UserRepository interface will now
+   * extend PagingAndSortingRepository interface which is an extended
+   * interface of current CrudRepository
+   */
+  @Override
+  public List<UserDto> getUsers(int page, int limit) {
+    if (page > 0) {
+      page -= 1; // offset page to start at index 1 rather the 0 based
+    }
+
+    Page<UserEntity> entityPage = userRepository.findAll(PageRequest.of(page, limit));
+
+    List<UserDto> returnList = new ArrayList<>(entityPage.getSize());
+
+    for (UserEntity entity : entityPage) {
+      UserDto userDto = new UserDto();
+      BeanUtils.copyProperties(entity, userDto);
+      returnList.add(userDto);
+    }
+
+    return returnList;
   }
 
   /**
