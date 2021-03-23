@@ -3,10 +3,13 @@ package edu.mrdrprof.app.ws.ui.controller;
 import edu.mrdrprof.app.ws.service.UserService;
 import edu.mrdrprof.app.ws.shared.dto.UserDto;
 import edu.mrdrprof.app.ws.ui.model.request.UserDetailsRequestModel;
+import edu.mrdrprof.app.ws.ui.model.request.UserUpdateRequestModel;
 import edu.mrdrprof.app.ws.ui.model.response.UserRest;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
@@ -32,7 +35,7 @@ public class UserController {
 
   @PostMapping(consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
                produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
-  public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) {
+  public UserRest createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) {
     UserDto userDto = new UserDto();
     BeanUtils.copyProperties(userDetails, userDto);
     UserDto storedUser = userService.createUser(userDto);
@@ -45,7 +48,7 @@ public class UserController {
   @PutMapping(path = "/{userId}",
               consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
               produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
-  public UserRest updateUser(@PathVariable String userId, @RequestBody UserDetailsRequestModel userDetails) {
+  public UserRest updateUser(@PathVariable String userId, @Valid @RequestBody UserUpdateRequestModel userDetails) {
     UserDto userDto = new UserDto();
     BeanUtils.copyProperties(userDetails, userDto);
     UserDto updatedUser = userService.updateUser(userId, userDto);
