@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * User data transfer object between different application layers
@@ -27,4 +28,5 @@ public class UserDto implements Serializable {
   private String encryptedPassword;
   private String emailVerificationToken;
   private boolean emailVerificationStatus = false;
+  private List<AddressDto> addresses;
 }

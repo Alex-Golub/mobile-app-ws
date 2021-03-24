@@ -16,6 +16,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>mobile-app-ws</name>
   <description>RESTful Web-Services</description>
+<!--  <packaging>war</packaging>-->
 
   <properties>
     <java.version>11</java.version>
@@ -66,6 +67,22 @@
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
+    </dependency>
+
+    <!-- provide dependencies to tomcat server at
+    runtime rather then compile time -->
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.boot</groupId>-->
+<!--      <artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--      <scope>provided</scope>-->
+<!--    </dependency>-->
+
+    <!-- http://modelmapper.org/getting-started/ -->
+    <!-- map objects in a deeper level -->
+    <dependency>
+      <groupId>org.modelmapper</groupId>
+      <artifactId>modelmapper</artifactId>
+      <version>2.3.0</version>
     </dependency>
 
     <dependency>

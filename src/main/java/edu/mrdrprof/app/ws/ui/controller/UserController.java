@@ -9,6 +9,7 @@ import edu.mrdrprof.app.ws.ui.model.response.RequestOperationName;
 import edu.mrdrprof.app.ws.ui.model.response.RequestOperationStatus;
 import edu.mrdrprof.app.ws.ui.model.response.UserRest;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 @AllArgsConstructor // constructor autowiring
 public class UserController {
   private final UserService userService;
+  private final ModelMapper modelMapper;
 
   /** http://localhost:8080/users?page=1&limit=5 */
   @GetMapping(produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
@@ -59,13 +61,18 @@ public class UserController {
   @PostMapping(consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
                produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public UserRest createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) {
-    UserDto userDto = new UserDto();
-    BeanUtils.copyProperties(userDetails, userDto);
-    UserDto storedUser = userService.createUser(userDto);
-    UserRest userRest = new UserRest();
-    BeanUtils.copyProperties(storedUser, userRest);
+//    UserDto userDto = new UserDto();
+//    BeanUtils.copyProperties(userDetails, userDto);
 
-    return userRest;
+    UserDto userDto = modelMapper.map(userDetails, UserDto.class);
+
+    UserDto storedUser = userService.createUser(
+            modelMapper.map(userDetails, UserDto.class)
+    );
+//    UserRest userRest = new UserRest();
+//    BeanUtils.copyProperties(storedUser, userRest);
+
+    return modelMapper.map(storedUser, UserRest.class);
   }
 
   @PutMapping(path = "/{userId}",
