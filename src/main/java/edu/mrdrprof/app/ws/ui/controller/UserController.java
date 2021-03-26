@@ -33,7 +33,11 @@ public class UserController {
   private final UserService userService;
   private final ModelMapper modelMapper;
 
-  /** http://localhost:8080/users?page=1&limit=5 */
+  /**
+   * using query string here to get the user request for how many
+   * entries to display per page.
+   * http://localhost:8080/users?page=1&limit=5
+   */
   @GetMapping(produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public List<UserRest> getListOfUsers(@RequestParam(value = "page", defaultValue = "0") int page,
                                        @RequestParam(value = "limit", defaultValue = "5") int limit) {
@@ -61,18 +65,7 @@ public class UserController {
   @PostMapping(consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
                produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public UserRest createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) {
-//    UserDto userDto = new UserDto();
-//    BeanUtils.copyProperties(userDetails, userDto);
-
-    UserDto userDto = modelMapper.map(userDetails, UserDto.class);
-
-    UserDto storedUser = userService.createUser(
-            modelMapper.map(userDetails, UserDto.class)
-    );
-//    UserRest userRest = new UserRest();
-//    BeanUtils.copyProperties(storedUser, userRest);
-
-    return modelMapper.map(storedUser, UserRest.class);
+    return modelMapper.map(userService.createUser(modelMapper.map(userDetails, UserDto.class)), UserRest.class);
   }
 
   @PutMapping(path = "/{userId}",

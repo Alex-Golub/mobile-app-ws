@@ -17,10 +17,11 @@ public class AddressDto implements Serializable {
   private static final long serialVersionUID = 7743451213588904562L;
 
   private long id;
+  private String addressId;
   private String city;
   private String country;
   private String streetName;
   private String postalCode;
   private String type;
-  private UserDto userDto;
+  private UserDto userDetails;
 }

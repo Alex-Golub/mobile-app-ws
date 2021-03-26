@@ -16,7 +16,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>mobile-app-ws</name>
   <description>RESTful Web-Services</description>
-<!--  <packaging>war</packaging>-->
+  <!--  <packaging>war</packaging>-->
 
   <properties>
     <java.version>11</java.version>
@@ -71,11 +71,11 @@
 
     <!-- provide dependencies to tomcat server at
     runtime rather then compile time -->
-<!--    <dependency>-->
-<!--      <groupId>org.springframework.boot</groupId>-->
-<!--      <artifactId>spring-boot-starter-tomcat</artifactId>-->
-<!--      <scope>provided</scope>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>org.springframework.boot</groupId>-->
+    <!--      <artifactId>spring-boot-starter-tomcat</artifactId>-->
+    <!--      <scope>provided</scope>-->
+    <!--    </dependency>-->
 
     <!-- http://modelmapper.org/getting-started/ -->
     <!-- map objects in a deeper level -->

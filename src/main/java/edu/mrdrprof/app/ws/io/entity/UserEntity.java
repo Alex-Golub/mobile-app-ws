@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Persisted into a table called users
@@ -14,15 +15,15 @@ import java.io.Serializable;
  * @since 20/03/2021 15:06
  */
 @Entity(name = "users")
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 public class UserEntity implements Serializable {
   private static final long serialVersionUID = 3484347551592920965L;
 
   @Id // primary-key, auto-incremented
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @Column(nullable = false)
   private String userId;
@@ -43,4 +44,11 @@ public class UserEntity implements Serializable {
 
   @Column(nullable = false)
   private boolean emailVerificationStatus = false;
+
+  /**
+   * one user can have many addresses.
+   * This column is mapped-by AddressEntity userDetails field.
+   */
+  @OneToMany(mappedBy = "userDetails", cascade = CascadeType.ALL)
+  private List<AddressEntity> addresses;
 }
