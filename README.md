@@ -41,4 +41,5 @@
   to [Tomcat](https://tomcat.apache.org/whichversion.html) server
 - ✅ [ModelMapper](http://modelmapper.org/) - Replace `BeanUtils` shallow mapping
   with deeper level mapping between objects that can contain Collection fields.
-- ...
+- ✅ `HATEOS` - response can contain other links related to the current returned resource.
+  Let clients use those resources without manually type them in.

@@ -9,6 +9,8 @@ import edu.mrdrprof.app.ws.ui.model.response.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,7 +33,7 @@ public class UserController {
 
   /**
    * Clients can provide how many entries to display per-page using a query-string
-   * http://localhost:{port#}/{context-path}/{resource}?page=1&limit=5
+   * http://localhost:{port#}/{context-path}/users/{resource}?page=1&limit=5
    */
   @GetMapping(produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public List<UserRest> getListOfUsers(@RequestParam(value = "page", defaultValue = "0") int page,
@@ -40,28 +42,51 @@ public class UserController {
                            new TypeToken<List<UserRest>>() {}.getType());
   }
 
-  /** Get user by userId endpoint => http://localhost:{port#}/{context-path}/{userId} */
+  /** Get user by userId endpoint => http://localhost:{port#}/{context-path}/users/{userId} */
   @GetMapping(path = "/{userId}", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public UserRest getUser(@PathVariable String userId) {
     return modelMapper.map(userService.getUserByUserId(userId),
                            UserRest.class);
   }
 
-  /** Get list of addresses for this userId => http://localhost:{port#}/{context-path}/{userId}/addresses */
+  /** Get list of addresses for this userId => http://localhost:{port#}/{context-path}/users/{userId}/addresses */
   @GetMapping(path = "/{userId}/addresses", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public List<AddressRest> getListOfAddresses(@PathVariable String userId) {
     return modelMapper.map(addressService.getAddresses(userId),
                            new TypeToken<List<AddressRest>>() {}.getType());
   }
 
-  /** Get single address details for this userId => http://localhost:{port#}/{context-path}/{userId}/addresses/{addressId} */
+  /** Get single address details for this userId => http://localhost:{port#}/{context-path}/users/{userId}/addresses/{addressId} */
   @GetMapping(path = "/{userId}/addresses/{addressId}", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public AddressRest getUserAddress(@PathVariable String userId, @PathVariable String addressId) {
-    return modelMapper.map(addressService.getUserAddress(addressId),
-                           AddressRest.class);
+    AddressRest addressRest = modelMapper.map(addressService.getUserAddress(addressId),
+                                              AddressRest.class);
+
+    // Build root address => http://localhost:8080/{context-path}/users
+    WebMvcLinkBuilder linkBuilder = WebMvcLinkBuilder.linkTo(UserController.class);
+
+    // link to this user => {root-address}/{userId}
+    Link user = linkBuilder
+            .slash(userId)
+            .withRel("user");
+
+    // link to all addresses for this user => {root-address}/{userId}/addresses
+    Link addresses = linkBuilder
+            .slash(userId)
+            .slash("addresses")
+            .withRel("address");
+
+    // link of this endpoint => {root-address}/{userId}/addresses/{addressId}
+    Link selfRel = linkBuilder
+            .slash(userId)
+            .slash("addresses")
+            .slash(addressId)
+            .withSelfRel();
+
+    return addressRest.add(user, addresses, selfRel);
   }
 
-  /** Create new user entry => http://localhost:{port#}/{context-path}/{resource} */
+  /** Create new user entry => http://localhost:{port#}/{context-path}/users/{resource} */
   @PostMapping(consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
                produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public UserRest createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) {
@@ -69,7 +94,7 @@ public class UserController {
                            UserRest.class);
   }
 
-  /** Update user entry by providing userId => http://localhost:{port#}/{context-path}/{userId} */
+  /** Update user entry by providing userId => http://localhost:{port#}/{context-path}/users/{userId} */
   @PutMapping(path = "/{userId}",
               consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
               produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
@@ -79,7 +104,7 @@ public class UserController {
     return modelMapper.map(updatedUser, UserUpdateRest.class);
   }
 
-  /** Delete user entry by providing userId => hhtp://localhost:{port#}/{context-path}/{userId} */
+  /** Delete user entry by providing userId => hhtp://localhost:{port#}/{context-path}/users/{userId} */
   @DeleteMapping(path = "/{userId}")
   public OperationRequestModel deleteUser(@PathVariable String userId) {
     OperationRequestModel operationRequestModel = new OperationRequestModel();
