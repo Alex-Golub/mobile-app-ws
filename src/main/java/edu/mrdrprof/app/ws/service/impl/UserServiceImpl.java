@@ -10,8 +10,8 @@ import edu.mrdrprof.app.ws.shared.dto.AddressDto;
 import edu.mrdrprof.app.ws.shared.dto.UserDto;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Mr.Dr.Professor
@@ -54,7 +55,8 @@ public class UserServiceImpl implements UserService {
 
     UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
 
-    return modelMapper.map(userRepository.save(userEntity), UserDto.class);
+    return modelMapper.map(userRepository.save(userEntity),
+                           UserDto.class);
   }
 
   @Override
@@ -76,9 +78,7 @@ public class UserServiceImpl implements UserService {
       throw new UserServiceException(applicationProperties.getProperty("noRecordFound"));
     }
 
-    UserDto userDto = new UserDto();
-    BeanUtils.copyProperties(userEntity, userDto);
-    return userDto;
+    return modelMapper.map(userEntity, UserDto.class);
   }
 
   @Override
@@ -91,10 +91,7 @@ public class UserServiceImpl implements UserService {
     userEntity.setFirstName(userDto.getFirstName());
     userEntity.setLastName(userDto.getLastName());
 
-    UserEntity save = userRepository.save(userEntity);
-    BeanUtils.copyProperties(save, userDto);
-
-    return userDto;
+    return modelMapper.map(userRepository.save(userEntity), UserDto.class);
   }
 
   @Override
@@ -119,17 +116,11 @@ public class UserServiceImpl implements UserService {
       page -= 1; // offset page to start at index 1 rather the 0 based
     }
 
-    Page<UserEntity> entityPage = userRepository.findAll(PageRequest.of(page, limit));
-
-    List<UserDto> returnList = new ArrayList<>(entityPage.getSize());
-
-    for (UserEntity entity : entityPage) {
-      UserDto userDto = new UserDto();
-      BeanUtils.copyProperties(entity, userDto);
-      returnList.add(userDto);
-    }
-
-    return returnList;
+    return userRepository
+            .findAll(PageRequest.of(page, limit))
+            .stream()
+            .map(userEntity -> modelMapper.map(userEntity, UserDto.class))
+            .collect(Collectors.toList());
   }
 
   /**

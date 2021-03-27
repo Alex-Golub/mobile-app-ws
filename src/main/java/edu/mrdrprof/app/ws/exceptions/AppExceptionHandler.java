@@ -30,6 +30,11 @@ public class AppExceptionHandler {
     return new ResponseEntity<>(getErrorMessage(e), INTERNAL_SERVER_ERROR);
   }
 
+  @ExceptionHandler(value = AddressServiceException.class)
+  public ResponseEntity<ErrorMessage> addressServiceExceptionHandler(AddressServiceException e) {
+    return new ResponseEntity<>(getErrorMessage(e), INTERNAL_SERVER_ERROR);
+  }
+
   private ErrorMessage getErrorMessage(Exception e) {
     return new ErrorMessage(new Date(), e.getMessage());
   }

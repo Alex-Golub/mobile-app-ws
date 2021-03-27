@@ -40,5 +40,5 @@
 - ✅ Extract `.war` file from spring project and deploy
   to [Tomcat](https://tomcat.apache.org/whichversion.html) server
 - ✅ [ModelMapper](http://modelmapper.org/) - Replace `BeanUtils` shallow mapping
-  with deeper level mapping between objects.
+  with deeper level mapping between objects that can contain Collection fields.
 - ...
