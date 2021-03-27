@@ -2,6 +2,7 @@ package edu.mrdrprof.app.ws.service.impl;
 
 import edu.mrdrprof.app.ws.ApplicationProperties;
 import edu.mrdrprof.app.ws.exceptions.AddressServiceException;
+import edu.mrdrprof.app.ws.io.entity.AddressEntity;
 import edu.mrdrprof.app.ws.io.entity.UserEntity;
 import edu.mrdrprof.app.ws.repository.AddressRepository;
 import edu.mrdrprof.app.ws.repository.UserRepository;
@@ -29,9 +30,7 @@ public class AddressServiceImpl implements AddressService {
   @Override
   public List<AddressDto> getAddresses(String userId) {
     UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
-    if (userEntity == null) {
-      throw new AddressServiceException(properties.getProperty("noRecordFound"));
-    }
+    valid(userEntity);
 
     // alternative method is to query address repository for userEntity addresses list
 //    List<AddressEntity> userAddresses = addressRepository.findAllByUserDetails(userEntity);
@@ -40,5 +39,19 @@ public class AddressServiceImpl implements AddressService {
     // at least one address must be provided (see UserDetailsRequestModel addresses field @Size)
     return modelMapper.map(userEntity.getAddresses(),
                            new TypeToken<List<AddressDto>>() {}.getType());
+  }
+
+  @Override
+  public AddressDto getUserAddress(String addressId) {
+    AddressEntity addressEntity = addressRepository.findByAddressId(addressId);
+    valid(addressEntity);
+
+    return modelMapper.map(addressEntity, AddressDto.class);
+  }
+
+  private void valid(Object o) {
+    if (o == null) {
+      throw new AddressServiceException(properties.getProperty("noRecordFound"));
+    }
   }
 }

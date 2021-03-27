@@ -2,7 +2,6 @@ package edu.mrdrprof.app.ws.ui.controller;
 
 import edu.mrdrprof.app.ws.service.AddressService;
 import edu.mrdrprof.app.ws.service.UserService;
-import edu.mrdrprof.app.ws.shared.dto.AddressDto;
 import edu.mrdrprof.app.ws.shared.dto.UserDto;
 import edu.mrdrprof.app.ws.ui.model.request.UserDetailsRequestModel;
 import edu.mrdrprof.app.ws.ui.model.request.UserUpdateRequestModel;
@@ -10,7 +9,6 @@ import edu.mrdrprof.app.ws.ui.model.response.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -56,6 +54,13 @@ public class UserController {
                            new TypeToken<List<AddressRest>>() {}.getType());
   }
 
+  /** Get single address details for this userId => http://localhost:{port#}/{context-path}/{userId}/addresses/{addressId} */
+  @GetMapping(path = "/{userId}/addresses/{addressId}", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+  public AddressRest getUserAddress(@PathVariable String userId, @PathVariable String addressId) {
+    return modelMapper.map(addressService.getUserAddress(addressId),
+                           AddressRest.class);
+  }
+
   /** Create new user entry => http://localhost:{port#}/{context-path}/{resource} */
   @PostMapping(consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
                produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
@@ -84,4 +89,6 @@ public class UserController {
     operationRequestModel.setOperationStatus(RequestOperationStatus.SUCCESS.toString());
     return operationRequestModel;
   }
+
+
 }
