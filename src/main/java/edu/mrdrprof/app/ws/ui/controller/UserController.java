@@ -9,11 +9,14 @@ import edu.mrdrprof.app.ws.ui.model.response.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -51,39 +54,54 @@ public class UserController {
 
   /** Get list of addresses for this userId => http://localhost:{port#}/{context-path}/users/{userId}/addresses */
   @GetMapping(path = "/{userId}/addresses", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
-  public List<AddressRest> getListOfAddresses(@PathVariable String userId) {
-    return modelMapper.map(addressService.getAddresses(userId),
-                           new TypeToken<List<AddressRest>>() {}.getType());
+  public CollectionModel<AddressRest> getListOfAddresses(@PathVariable String userId) {
+    List<AddressRest> addressRestList = modelMapper.map(addressService.getAddresses(userId),
+                                                        new TypeToken<List<AddressRest>>() {}.getType());
+    Link user = WebMvcLinkBuilder
+            .linkTo(UserController.class)
+            .slash(userId)
+            .withRel("user");
+
+    Link selfLink = WebMvcLinkBuilder
+            .linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
+                            .getListOfAddresses(userId))
+            .withSelfRel();
+
+    // Add self link for each addressRest
+    addressRestList.forEach(addressRest -> addressRest.add(
+            WebMvcLinkBuilder
+                    .linkTo((WebMvcLinkBuilder.methodOn(UserController.class)
+                            .getUserAddress(userId, addressRest.getAddressId())))
+                    .withSelfRel()
+    ));
+
+    return CollectionModel.of(addressRestList, user, selfLink);
   }
 
   /** Get single address details for this userId => http://localhost:{port#}/{context-path}/users/{userId}/addresses/{addressId} */
   @GetMapping(path = "/{userId}/addresses/{addressId}", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
-  public AddressRest getUserAddress(@PathVariable String userId, @PathVariable String addressId) {
+  public EntityModel<AddressRest> getUserAddress(@PathVariable String userId, @PathVariable String addressId) {
     AddressRest addressRest = modelMapper.map(addressService.getUserAddress(addressId),
                                               AddressRest.class);
 
-    // Build root address => http://localhost:8080/{context-path}/users
-    WebMvcLinkBuilder linkBuilder = WebMvcLinkBuilder.linkTo(UserController.class);
-
     // link to this user => {root-address}/{userId}
-    Link user = linkBuilder
+    Link user = WebMvcLinkBuilder
+            .linkTo(UserController.class)
             .slash(userId)
             .withRel("user");
 
     // link to all addresses for this user => {root-address}/{userId}/addresses
-    Link addresses = linkBuilder
-            .slash(userId)
-            .slash("addresses")
-            .withRel("address");
+    UserController userController = WebMvcLinkBuilder.methodOn(UserController.class);
+    Link addresses = WebMvcLinkBuilder
+            .linkTo(userController.getListOfAddresses(userId))
+            .withRel("addresses");
 
     // link of this endpoint => {root-address}/{userId}/addresses/{addressId}
-    Link selfRel = linkBuilder
-            .slash(userId)
-            .slash("addresses")
-            .slash(addressId)
+    Link selfRel = WebMvcLinkBuilder
+            .linkTo(userController.getUserAddress(userId, addressId))
             .withSelfRel();
 
-    return addressRest.add(user, addresses, selfRel);
+    return EntityModel.of(addressRest, Arrays.asList(user, addresses, selfRel));
   }
 
   /** Create new user entry => http://localhost:{port#}/{context-path}/users/{resource} */
