@@ -38,6 +38,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .mvcMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
             .permitAll()
+            .mvcMatchers(SecurityConstants.H2_CONSOLE)
+            .permitAll()
             .anyRequest()
             .authenticated()
             .and()
@@ -45,6 +47,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             .addFilter(new AuthorizationFilter(authenticationManager()))
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+    // allow h2 console load in browser window
+    http.headers().frameOptions().disable();
   }
 
   @Override

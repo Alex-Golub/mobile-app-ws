@@ -13,10 +13,9 @@
 
 ### Tools and Projects used (see commits for detailed progress):
 
-- ✅ - [Boot Reference Documentation](https://docs.spring.io/spring-boot/docs/2.4.4/reference/html/)
+- ✅ [Boot Reference Documentation](https://docs.spring.io/spring-boot/docs/2.4.4/reference/html/)
 - ✅ [Web Services Reference Documentation](https://docs.spring.io/spring-ws/docs/3.0.10.RELEASE/reference/)
-- ✅ Data `JPA`
-  - [Data JPA - Reference Documentation](https://bit.ly/3cT5AQl)
+- ✅ [Data JPA - Reference Documentation](https://bit.ly/3cT5AQl)
   - [keywords supported for JPA](https://bit.ly/396AlAd)
   - CRUD
   - Pagination
@@ -42,3 +41,8 @@
     - `EntityModel<T>` - using the `WebMvcLinkBuilder` to add addresses with relation
     to this class
     - `CollectionModel<T>` - ability to add multiple links into a collection
+- ⏳ User email verification and password reset service using AWS-SES
+- ⏳ Testing
+  - Business logic testing using [JUnit5](https://junit.org/junit5/docs/current/user-guide/)
+  - Testing entire web-service endpoints response correctness using [REST Assured](https://github.com/rest-assured/rest-assured/wiki/ReleaseNotes42)
+- ✅ [H2 Database (in memory db)](https://www.h2database.com/html/features.html)

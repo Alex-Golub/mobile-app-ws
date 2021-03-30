@@ -10,8 +10,6 @@ import edu.mrdrprof.app.ws.shared.dto.AddressDto;
 import edu.mrdrprof.app.ws.shared.dto.UserDto;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,7 +38,8 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto createUser(UserDto userDto) {
     if (userRepository.findUserEntityByEmail(userDto.getEmail()) != null) {
-      throw new UserServiceException(applicationProperties.getProperty("recordAlreadyExists"));
+      throw new UserServiceException(applicationProperties
+                                             .getProperty("recordAlreadyExists"));
     }
 
     for (int i = 0; i < userDto.getAddresses().size(); i++) {
@@ -61,21 +60,20 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto getUserByEmail(String email) {
-    UserEntity UserEntity = userRepository.findUserEntityByEmail(email);
-    if (UserEntity == null) {
+    UserEntity userEntity = userRepository.findUserEntityByEmail(email);
+    if (userEntity == null) {
       throw new UsernameNotFoundException("There is no user with email " + email);
     }
 
-    UserDto userDto = new UserDto();
-    BeanUtils.copyProperties(UserEntity, userDto);
-    return userDto;
+    return modelMapper.map(userEntity, UserDto.class);
   }
 
   @Override
   public UserDto getUserByUserId(String userId) {
     UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
     if (userEntity == null) {
-      throw new UserServiceException(applicationProperties.getProperty("noRecordFound"));
+      throw new UserServiceException(applicationProperties
+                                             .getProperty("noRecordFound"));
     }
 
     return modelMapper.map(userEntity, UserDto.class);
@@ -85,7 +83,8 @@ public class UserServiceImpl implements UserService {
   public UserDto updateUser(String userId, UserDto userDto) {
     UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
     if (userEntity == null) {
-      throw new UserServiceException(applicationProperties.getProperty("couldNotUpdateRecord"));
+      throw new UserServiceException(applicationProperties
+                                             .getProperty("couldNotUpdateRecord"));
     }
 
     userEntity.setFirstName(userDto.getFirstName());
@@ -98,7 +97,8 @@ public class UserServiceImpl implements UserService {
   public void deleteUser(String userId) {
     UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
     if (userEntity == null) {
-      throw new UserServiceException(applicationProperties.getProperty("couldNotUpdateDelete"));
+      throw new UserServiceException(applicationProperties
+                                             .getProperty("couldNotUpdateDelete"));
     }
 
     userRepository.delete(userEntity);
