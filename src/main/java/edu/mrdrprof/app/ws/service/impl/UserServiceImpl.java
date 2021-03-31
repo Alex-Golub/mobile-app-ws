@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
   private final Utils utils;
   private final BCryptPasswordEncoder passwordEncoder;
   private final ApplicationProperties applicationProperties;
-  private final ModelMapper modelMapper;
 
   @Override
   public UserDto createUser(UserDto userDto) {
@@ -52,6 +51,7 @@ public class UserServiceImpl implements UserService {
     userDto.setUserId(utils.generateRandomString(ID_LENGTH));
     userDto.setEncryptedPassword(passwordEncoder.encode(userDto.getPassword()));
 
+    ModelMapper modelMapper = new ModelMapper();
     UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
 
     return modelMapper.map(userRepository.save(userEntity),
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
       throw new UsernameNotFoundException("There is no user with email " + email);
     }
 
-    return modelMapper.map(userEntity, UserDto.class);
+    return new ModelMapper().map(userEntity, UserDto.class);
   }
 
   @Override
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
                                              .getProperty("noRecordFound"));
     }
 
-    return modelMapper.map(userEntity, UserDto.class);
+    return new ModelMapper().map(userEntity, UserDto.class);
   }
 
   @Override
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     userEntity.setFirstName(userDto.getFirstName());
     userEntity.setLastName(userDto.getLastName());
 
-    return modelMapper.map(userRepository.save(userEntity), UserDto.class);
+    return new ModelMapper().map(userRepository.save(userEntity), UserDto.class);
   }
 
   @Override
@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
     return userRepository
             .findAll(PageRequest.of(page, limit))
             .stream()
-            .map(userEntity -> modelMapper.map(userEntity, UserDto.class))
+            .map(userEntity -> new ModelMapper().map(userEntity, UserDto.class))
             .collect(Collectors.toList());
   }
 

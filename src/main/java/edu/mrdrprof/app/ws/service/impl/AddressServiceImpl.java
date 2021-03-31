@@ -25,7 +25,6 @@ public class AddressServiceImpl implements AddressService {
   private final AddressRepository addressRepository;
   private final UserRepository userRepository;
   private final ApplicationProperties properties;
-  private final ModelMapper modelMapper;
 
   @Override
   public List<AddressDto> getAddresses(String userId) {
@@ -37,8 +36,8 @@ public class AddressServiceImpl implements AddressService {
 
     // addresses can never be null because when new user created
     // at least one address must be provided (see UserDetailsRequestModel addresses field @Size)
-    return modelMapper.map(userEntity.getAddresses(),
-                           new TypeToken<List<AddressDto>>() {}.getType());
+    return new ModelMapper().map(userEntity.getAddresses(),
+                                 new TypeToken<List<AddressDto>>() {}.getType());
   }
 
   @Override
@@ -46,7 +45,7 @@ public class AddressServiceImpl implements AddressService {
     AddressEntity addressEntity = addressRepository.findByAddressId(addressId);
     valid(addressEntity);
 
-    return modelMapper.map(addressEntity, AddressDto.class);
+    return new ModelMapper().map(addressEntity, AddressDto.class);
   }
 
   private void valid(Object o) {
