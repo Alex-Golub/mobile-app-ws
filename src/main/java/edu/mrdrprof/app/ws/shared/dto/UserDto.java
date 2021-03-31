@@ -1,8 +1,6 @@
 package edu.mrdrprof.app.ws.shared.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,8 +12,10 @@ import java.util.List;
  * @since 20/03/2021 14:18
  */
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
+@Builder
 public class UserDto implements Serializable {
   private static final long serialVersionUID = -6724621981044682155L;
 
