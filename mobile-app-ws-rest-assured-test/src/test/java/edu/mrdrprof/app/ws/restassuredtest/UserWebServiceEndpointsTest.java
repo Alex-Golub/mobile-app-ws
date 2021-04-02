@@ -32,12 +32,15 @@ class UserWebServiceEndpointsTest {
 
   @Test
   @Order(1)
-  void userLogin() {
+  final void userLogin() {
+    Map<String, String> requestBody = Map.of("email", "alex@email.com",
+                                             "password", "1234");
+
     // http://localhost:8080/restful-ws/users/login
     Response response = given()
             .contentType(JSON)
             .accept(JSON)
-            .body(getLoginDetails())
+            .body(requestBody)
             .when()
             .post(CONTEXT_PATH + "/users/login")
             .then()
@@ -54,14 +57,9 @@ class UserWebServiceEndpointsTest {
     assertEquals(USER_ID_LENGTH, userId.length());
   }
 
-  final Map<String, String> getLoginDetails() {
-    return Map.of("email", "alex@email.com",
-                  "password", "1234");
-  }
-
   @Test
   @Order(2)
-  void getUser() {
+  final void getUser() {
     // http://localhost:8080/restful-ws/users/{userId}
     Response response = given()
             .pathParam("userId", userId)
@@ -94,5 +92,37 @@ class UserWebServiceEndpointsTest {
     int addressesSize = addresses.size();
     assertEquals(2, addressesSize);
     assertEquals(USER_ID_LENGTH, addressIdLength);
+  }
+
+  @Test
+  @Order(3)
+  final void updateUser() {
+    Map<String, String> requestBody = Map.of("firstName", "Sacha",
+                                             "lastName", "Go");
+
+    // http://localhost:{port#}/{context-path}/users/{userId}
+    Response response = given()
+            .pathParam("userId", UserWebServiceEndpointsTest.userId)
+            .header("Authorization", UserWebServiceEndpointsTest.authorizationToken)
+            .contentType(JSON)
+            .accept(JSON)
+            .body(requestBody)
+            .when()
+            .put(CONTEXT_PATH + "/users/{userId}")
+            .then()
+            .statusCode(HttpStatus.SC_OK)
+            .contentType(JSON)
+            .extract()
+            .response();
+
+    String firstName = response.jsonPath().getString("firstName");
+    String lastName = response.jsonPath().getString("lastName");
+    String userId = response.jsonPath().getString("userId");
+    assertNotNull(firstName);
+    assertNotNull(lastName);
+    assertNotNull(userId);
+
+    assertEquals(requestBody.get("firstName"), firstName);
+    assertEquals(requestBody.get("lastName"), lastName);
   }
 }
