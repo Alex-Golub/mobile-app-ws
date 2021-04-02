@@ -13,22 +13,22 @@
 
 ### Tools and Projects used (see commits for detailed progress):
 
-- ✅ [Boot Reference Documentation](https://docs.spring.io/spring-boot/docs/2.4.4/reference/html/)
-- ✅ [Web Services Reference Documentation](https://docs.spring.io/spring-ws/docs/3.0.10.RELEASE/reference/)
-- ✅ [Data JPA - Reference Documentation](https://bit.ly/3cT5AQl)
+- ✅ [Boot](https://docs.spring.io/spring-boot/docs/2.4.4/reference/html/)
+- ✅ [Web Services](https://docs.spring.io/spring-ws/docs/3.0.10.RELEASE/reference/)
+- ✅ [Data](https://bit.ly/3cT5AQl)
   - [keywords supported for JPA](https://bit.ly/396AlAd)
   - CRUD
   - Pagination
-  - [JPA - Entity Relationships](https://www.tutorialspoint.com/jpa/jpa_entity_relationships.htm)
-- ✅ [Hibernate Validation Reference](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/)
-- ✅ [Security Reference](https://docs.spring.io/spring-security/site/docs/5.4.5/reference/html5/)
+  - [Entity Relationships](https://www.tutorialspoint.com/jpa/jpa_entity_relationships.htm)
+- ✅ [Hibernate Validation](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/)
+- ✅ [Security](https://docs.spring.io/spring-security/site/docs/5.4.5/reference/html5/)
   - Authentication
   - Authorization
 - ✅ `JWT`
   - [jjwt](https://github.com/jwtk/jjwt)
   - [jwt.io](https://jwt.io/)
 - ✅ [Project Lombok](https://projectlombok.org/features/all)
-- ✅ [MySQL DB](https://dev.mysql.com/doc/refman/8.0/en/)
+- ✅ [MySQL](https://dev.mysql.com/doc/refman/8.0/en/)
 - ✅ [Postman http client](https://learning.postman.com/docs/getting-started/introduction/)
 - ✅ Run Spring-Boot project from command-line(`mvn` commands)
 - ✅ Extract `.war` file from spring project and deploy
@@ -45,4 +45,4 @@
 - ✅ Testing
   - Unit and Integration testing using [JUnit5](https://junit.org/junit5/docs/current/user-guide/)
   - Testing web-service endpoints response correctness using [REST Assured](https://github.com/rest-assured/rest-assured/wiki/ReleaseNotes42)
-- ✅ [H2 Database (in memory db)](https://www.h2database.com/html/features.html)
+- ✅ [H2 DB](https://www.h2database.com/html/features.html)
