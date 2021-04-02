@@ -42,7 +42,7 @@
     to this class
     - `CollectionModel<T>` - ability to add multiple links into a collection
 - ⏳ User email verification and password reset service using AWS-SES
-- ⏳ Testing
-  - Business logic testing using [JUnit5](https://junit.org/junit5/docs/current/user-guide/)
-  - Testing entire web-service endpoints response correctness using [REST Assured](https://github.com/rest-assured/rest-assured/wiki/ReleaseNotes42)
+- ✅ Testing
+  - Unit and Integration testing using [JUnit5](https://junit.org/junit5/docs/current/user-guide/)
+  - Testing web-service endpoints response correctness using [REST Assured](https://github.com/rest-assured/rest-assured/wiki/ReleaseNotes42)
 - ✅ [H2 Database (in memory db)](https://www.h2database.com/html/features.html)
