@@ -93,7 +93,7 @@ class TestCreateUser {
     Map<String, Object> userDetails = new HashMap<>();
     userDetails.put("firstName", "Alex");
     userDetails.put("lastName", "Go");
-    userDetails.put("email", "xqq@email.com");
+    userDetails.put("email", "alex@email.com");
     userDetails.put("password", "1234");
     userDetails.put("addresses", userAddresses);
 

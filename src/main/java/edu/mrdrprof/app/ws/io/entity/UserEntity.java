@@ -50,6 +50,6 @@ public class UserEntity implements Serializable {
    * one user can have many addresses.
    * This column is mapped-by AddressEntity userDetails field.
    */
-  @OneToMany(mappedBy = "userDetails", cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "userDetails", cascade = CascadeType.ALL)
   private List<AddressEntity> addresses;
 }
