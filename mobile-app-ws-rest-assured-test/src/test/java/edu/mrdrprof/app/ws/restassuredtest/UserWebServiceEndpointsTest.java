@@ -125,4 +125,30 @@ class UserWebServiceEndpointsTest {
     assertEquals(requestBody.get("firstName"), firstName);
     assertEquals(requestBody.get("lastName"), lastName);
   }
+
+  @Test
+  @Order(4)
+  @Disabled // comment to prevent deletion of user when tests are executed
+  final void deleteUser() {
+    // http://localhost:{port#}/{context-path}/users/{userId}
+    Response response = given()
+            .pathParam("userId", UserWebServiceEndpointsTest.userId)
+            .header("Authorization", UserWebServiceEndpointsTest.authorizationToken)
+            .accept(JSON)
+            .when()
+            .delete(CONTEXT_PATH + "/users/{userId}")
+            .then()
+            .statusCode(HttpStatus.SC_OK)
+            .contentType(JSON)
+            .extract()
+            .response();
+
+    String operationName = response.jsonPath().getString("operationName");
+    String operationStatus = response.jsonPath().getString("operationStatus");
+
+    assertNotNull(operationName);
+    assertNotNull(operationStatus);
+    assertEquals("DELETE", operationName);
+    assertEquals("SUCCESS", operationStatus);
+  }
 }
