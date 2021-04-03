@@ -1,8 +1,6 @@
 package edu.mrdrprof.app.ws.io.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +13,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 public class AddressEntity implements Serializable {
   private static final long serialVersionUID = -1950339052271451415L;
 

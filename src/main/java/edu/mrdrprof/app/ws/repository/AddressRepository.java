@@ -14,6 +14,5 @@ import java.util.List;
 @Repository
 public interface AddressRepository extends CrudRepository<AddressEntity, Long> {
   List<AddressEntity> findAllByUserDetails(UserEntity user);
-
   AddressEntity findByAddressId(String addressId);
 }
