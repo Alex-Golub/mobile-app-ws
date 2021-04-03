@@ -27,6 +27,7 @@ public interface UserRepository /*extends CrudRepository*/
 
   UserEntity findUserEntityByUserId(String userId);
 
+  // ============ Native SQL Query Platform dependent ============
   // hard coding value of email_verification_status - bad practice
   @Query(value = "SELECT * FROM users u WHERE u.email_verification_status = 'true'",
          countQuery = "SELECT count(*) FROM users u WHERE u.email_verification_status = 'true'",
@@ -75,4 +76,28 @@ public interface UserRepository /*extends CrudRepository*/
          nativeQuery = true)
   void updateUserEmailVerificationStatus(@Param("status") boolean status,
                                          @Param("userId") String userId);
+
+  // ============ JPQL Platform independent ============
+  // E.g. for JPQL query which is using the entity name rather then entity table
+  // and fields from the entity class rather then column names
+  @Query("SELECT user " +
+         "FROM UserEntity user " +
+         "WHERE user.firstName = :firstName AND " +
+         "user.lastName = :lastName")
+  UserEntity findUserEntityByFullName(@Param("firstName") String firstName,
+                                      @Param("lastName") String lastName);
+
+  // Return specified number of columns
+  @Query("SELECT user.firstName, user.lastName " +
+         "FROM UserEntity user " +
+         "WHERE user.userId = :userId")
+  List<Object[]> findUserEntityFullNameByUserId(@Param("userId") String userId);
+
+  @Transactional
+  @Modifying
+  @Query("UPDATE UserEntity user " +
+         "SET user.emailVerificationStatus = :status " +
+         "WHERE user.userId = :userId")
+  void updateUserEmailVerificationStatus2(@Param("status") boolean status,
+                                          @Param("userId") String userId);
 }

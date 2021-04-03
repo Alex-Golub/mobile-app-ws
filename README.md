@@ -20,7 +20,8 @@
   - CRUD
   - Pagination
   - [Entity Relationships](https://www.tutorialspoint.com/jpa/jpa_entity_relationships.htm)
-  - Native SQL Query (`@Query`, Using  **_Positional_** and **_Named_** paramaters)
+  - Native SQL Query (`@Query`, Using  **_Positional_** and **_Named_** parameters, DB vendor dependent!)
+  - **_JPQL_** (DB vendor independent - Best practice)
 - ✅ [Hibernate Validation](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/)
 - ✅ [Security](https://docs.spring.io/spring-security/site/docs/5.4.5/reference/html5/)
   - Authentication

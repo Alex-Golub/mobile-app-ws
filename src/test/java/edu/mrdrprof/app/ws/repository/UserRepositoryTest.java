@@ -140,4 +140,41 @@ class UserRepositoryTest {
     userEntity = userRepository.findUserEntityByUserId(userId);
     assertTrue(userEntity.isEmailVerificationStatus());
   }
+
+  @Test
+  void findUserEntityByFullName() {
+    UserEntity entity = userRepository.findUserEntityByFullName("alex", "Go");
+    assertNotNull(entity);
+    assertEquals("alex", entity.getFirstName());
+    assertEquals("Go", entity.getLastName());
+  }
+
+  @Test
+  void findUserEntityFullNameByUserId() {
+    String userId = "1234abcd";
+    List<Object[]> list = userRepository.findUserEntityFullNameByUserId(userId);
+    assertNotNull(list);
+    assertEquals(1, list.size()); // { [<firstName>, <lastName>] }
+
+    String firstName = String.valueOf(list.get(0)[0]);
+    String lastName = String.valueOf(list.get(0)[1]);
+
+    assertEquals("ALEX", firstName);
+    assertEquals("Go", lastName);
+  }
+
+  @Test
+  void updateUserEmailVerificationStatus2() {
+    boolean status = false;
+    String userId = "1234abcd";
+    userRepository.updateUserEmailVerificationStatus2(status, userId);
+
+    UserEntity userEntity = userRepository.findUserEntityByUserId(userId);
+    assertFalse(userEntity.isEmailVerificationStatus());
+
+    status = true;
+    userRepository.updateUserEmailVerificationStatus2(status, userId);
+    userEntity = userRepository.findUserEntityByUserId(userId);
+    assertTrue(userEntity.isEmailVerificationStatus());
+  }
 }

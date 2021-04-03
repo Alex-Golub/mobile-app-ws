@@ -12,7 +12,8 @@ import java.util.List;
  * @author Mr.Dr.Professor
  * @since 20/03/2021 15:06
  */
-@Entity(name = "users")
+@Entity
+@Table(name = "users") // remove name from @Entity to allow using JPQL
 @NoArgsConstructor
 @Getter
 @Setter
