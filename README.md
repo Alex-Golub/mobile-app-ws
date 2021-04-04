@@ -48,3 +48,4 @@
   - Unit and Integration testing using [JUnit5](https://junit.org/junit5/docs/current/user-guide/)
   - Testing web-service endpoints response correctness using [REST Assured](https://github.com/rest-assured/rest-assured/wiki/ReleaseNotes42)
 - ✅ [H2 DB](https://www.h2database.com/html/features.html)
+- ✅ [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) - Enable endpoints to respond to requests from different domains

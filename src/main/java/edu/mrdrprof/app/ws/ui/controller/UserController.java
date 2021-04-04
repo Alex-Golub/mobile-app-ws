@@ -29,6 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 @RestController
 @RequestMapping(path = "/users")
 @AllArgsConstructor // constructor autowiring
+@CrossOrigin(origins = "*") // allow controller accept requests from all possible domains
 public class UserController {
   private final UserService userService;
   private final AddressService addressService;
@@ -47,7 +48,9 @@ public class UserController {
 
   /**
    * Get user by userId endpoint => http://localhost:{port#}/{context-path}/users/{userId}
+   * Enable method level CORS with specified domains to get response from this method
    */
+//  @CrossOrigin(origins = {"http://localhost:8085", "http://localhost:8095"})
   @GetMapping(path = "/{userId}", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public UserRest getUser(@PathVariable String userId) {
     return new ModelMapper().map(userService.getUserByUserId(userId),
