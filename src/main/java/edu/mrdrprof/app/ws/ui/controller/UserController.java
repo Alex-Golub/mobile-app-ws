@@ -29,7 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 @RestController
 @RequestMapping(path = "/users")
 @AllArgsConstructor // constructor autowiring
-@CrossOrigin(origins = "*") // allow controller accept requests from all possible domains
+//@CrossOrigin(origins = "*") // allow controller accept requests from all possible domains
 public class UserController {
   private final UserService userService;
   private final AddressService addressService;

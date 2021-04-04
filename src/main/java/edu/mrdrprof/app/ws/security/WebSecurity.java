@@ -2,6 +2,7 @@ package edu.mrdrprof.app.ws.security;
 
 import edu.mrdrprof.app.ws.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,6 +10,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 /**
  * Application security configurations extending already
@@ -34,7 +40,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
    */
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable()
+    http.cors()
+            .and()
+            .csrf().disable()
             .authorizeRequests()
             .mvcMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
             .permitAll()
@@ -58,10 +66,30 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             .passwordEncoder(bCryptPasswordEncoder);
   }
 
-  /** change spring default /login URL to /users/login */
+  /**
+   * Change spring default /login URL to /users/login
+   */
   public AuthenticationFilter authenticationFilter() throws Exception {
     AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
     filter.setFilterProcessesUrl("/users/login");
     return filter;
+  }
+
+  /**
+   * Enabling cors() in configure method we must provid
+   * corsConfigurationSource bean
+   */
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+    corsConfiguration.setAllowedOrigins(List.of("http://localhost:8080"));
+    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+    corsConfiguration.setAllowCredentials(true);
+    corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", corsConfiguration);
+    return source;
   }
 }
