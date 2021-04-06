@@ -1,6 +1,7 @@
 package edu.mrdrprof.app.ws.ui.controller;
 
 import edu.mrdrprof.app.ws.ui.model.request.LoginRequestModel;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ResponseHeader;
@@ -18,6 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 @RestController
 public class LoginController {
 
+  @ApiOperation(value = "user login using email and password")
   @ApiResponses(value = {
           @ApiResponse(
                   code = 200,

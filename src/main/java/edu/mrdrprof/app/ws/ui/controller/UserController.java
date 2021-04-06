@@ -7,6 +7,7 @@ import edu.mrdrprof.app.ws.ui.model.request.UserDetailsRequestModel;
 import edu.mrdrprof.app.ws.ui.model.request.UserUpdateRequestModel;
 import edu.mrdrprof.app.ws.ui.model.response.*;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -39,6 +40,8 @@ public class UserController {
    * Clients can provide how many entries to display per-page using a query-string
    * http://localhost:{port#}/{context-path}/users/{resource}?page=1&limit=5
    */
+  @ApiOperation(value = "Get list of users",
+                notes = "${userController.getListOfUsers}")
   @ApiImplicitParam(name = "Authorization",
                     value = "${userController.authorization.description}",
                     paramType = "header",
@@ -54,6 +57,8 @@ public class UserController {
    * Get user by userId endpoint => http://localhost:{port#}/{context-path}/users/{userId}
    * Enable method level CORS with specified domains to get response from this method
    */
+  @ApiOperation(value = "Get specific user",
+                notes = "${userController.getUser}")
   @ApiImplicitParam(name = "Authorization",
                     value = "${userController.authorization.description}",
                     paramType = "header",
@@ -68,6 +73,8 @@ public class UserController {
    * Get list of addresses for this userId
    * http://localhost:{port#}/{context-path}/users/{userId}/addresses
    */
+  @ApiOperation(value = "Get specific user address list",
+                notes = "${userController.getListOfAddresses}")
   @ApiImplicitParam(name = "Authorization",
                     value = "${userController.authorization.description}",
                     paramType = "header",
@@ -102,6 +109,8 @@ public class UserController {
    * Get single address details for this userId
    * http://localhost:{port#}/{context-path}/users/{userId}/addresses/{addressId}
    */
+  @ApiOperation(value = "Get user specific address",
+                notes = "${userController.getUserAddress}")
   @ApiImplicitParam(name = "Authorization",
                     value = "${userController.authorization.description}",
                     paramType = "header",
@@ -137,6 +146,8 @@ public class UserController {
    * Create new user entry
    * http://localhost:{port#}/{context-path}/users/{resource}
    */
+  @ApiOperation(value = "Create new user",
+                notes = "${userController.createUser}")
   @PostMapping(consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
                produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public UserRest createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) {

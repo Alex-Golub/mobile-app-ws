@@ -51,4 +51,4 @@
 - ✅ [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) - Enable endpoints to respond to requests from different domains
 - ✅ [Swagger](https://swagger.io/) - generate api documentation using user-friendly GUI
   - [SpringFox](https://springfox.github.io/springfox/docs/current/)
-  - http://host/context-path/swagger-ui/
+  - [SwaggerHub](https://swagger.io/tools/swaggerhub/) - allow share/collaborate endpoints documentation
