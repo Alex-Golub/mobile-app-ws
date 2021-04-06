@@ -6,6 +6,7 @@ import edu.mrdrprof.app.ws.shared.dto.UserDto;
 import edu.mrdrprof.app.ws.ui.model.request.UserDetailsRequestModel;
 import edu.mrdrprof.app.ws.ui.model.request.UserUpdateRequestModel;
 import edu.mrdrprof.app.ws.ui.model.response.*;
+import io.swagger.annotations.ApiImplicitParam;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -28,8 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
  */
 @RestController
 @RequestMapping(path = "/users")
-@AllArgsConstructor // constructor autowiring
-//@CrossOrigin(origins = "*") // allow controller accept requests from all possible domains
+@AllArgsConstructor
 public class UserController {
   private final UserService userService;
   private final AddressService addressService;
@@ -39,6 +39,10 @@ public class UserController {
    * Clients can provide how many entries to display per-page using a query-string
    * http://localhost:{port#}/{context-path}/users/{resource}?page=1&limit=5
    */
+  @ApiImplicitParam(name = "Authorization",
+                    value = "${userController.authorization.description}",
+                    paramType = "header",
+                    required = true)
   @GetMapping(produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public List<UserRest> getListOfUsers(@RequestParam(value = "page", defaultValue = "0") int page,
                                        @RequestParam(value = "limit", defaultValue = "5") int limit) {
@@ -50,7 +54,10 @@ public class UserController {
    * Get user by userId endpoint => http://localhost:{port#}/{context-path}/users/{userId}
    * Enable method level CORS with specified domains to get response from this method
    */
-//  @CrossOrigin(origins = {"http://localhost:8085", "http://localhost:8095"})
+  @ApiImplicitParam(name = "Authorization",
+                    value = "${userController.authorization.description}",
+                    paramType = "header",
+                    required = true)
   @GetMapping(path = "/{userId}", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public UserRest getUser(@PathVariable String userId) {
     return new ModelMapper().map(userService.getUserByUserId(userId),
@@ -61,6 +68,10 @@ public class UserController {
    * Get list of addresses for this userId
    * http://localhost:{port#}/{context-path}/users/{userId}/addresses
    */
+  @ApiImplicitParam(name = "Authorization",
+                    value = "${userController.authorization.description}",
+                    paramType = "header",
+                    required = true)
   @GetMapping(path = "/{userId}/addresses",
               produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public CollectionModel<AddressRest> getListOfAddresses(@PathVariable String userId) {
@@ -91,6 +102,10 @@ public class UserController {
    * Get single address details for this userId
    * http://localhost:{port#}/{context-path}/users/{userId}/addresses/{addressId}
    */
+  @ApiImplicitParam(name = "Authorization",
+                    value = "${userController.authorization.description}",
+                    paramType = "header",
+                    required = true)
   @GetMapping(path = "/{userId}/addresses/{addressId}",
               produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public EntityModel<AddressRest> getUserAddress(@PathVariable String userId,
@@ -133,6 +148,10 @@ public class UserController {
    * Update user entry by providing userId
    * http://localhost:{port#}/{context-path}/users/{userId}
    */
+  @ApiImplicitParam(name = "Authorization",
+                    value = "${userController.authorization.description}",
+                    paramType = "header",
+                    required = true)
   @PutMapping(path = "/{userId}",
               consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
               produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
@@ -146,6 +165,10 @@ public class UserController {
    * Delete user entry by providing userId
    * http://localhost:{port#}/{context-path}/users/{userId}
    */
+  @ApiImplicitParam(name = "Authorization",
+                    value = "${userController.authorization.description}",
+                    paramType = "header",
+                    required = true)
   @DeleteMapping(path = "/{userId}")
   public OperationRequestModel deleteUser(@PathVariable String userId) {
     OperationRequestModel operationRequestModel = new OperationRequestModel();

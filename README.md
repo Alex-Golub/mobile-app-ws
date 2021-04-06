@@ -49,3 +49,6 @@
   - Testing web-service endpoints response correctness using [REST Assured](https://github.com/rest-assured/rest-assured/wiki/ReleaseNotes42)
 - ✅ [H2 DB](https://www.h2database.com/html/features.html)
 - ✅ [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) - Enable endpoints to respond to requests from different domains
+- ✅ [Swagger](https://swagger.io/) - generate api documentation using user-friendly GUI
+  - [SpringFox](https://springfox.github.io/springfox/docs/current/)
+  - http://host/context-path/swagger-ui/
