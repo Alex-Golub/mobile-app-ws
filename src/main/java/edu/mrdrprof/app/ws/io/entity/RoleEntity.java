@@ -1,7 +1,6 @@
 package edu.mrdrprof.app.ws.io.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +14,9 @@ import java.util.Collection;
 @Table(name = "roles")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RoleEntity implements Serializable {
   private static final long serialVersionUID = -6942029645643454347L;
 
@@ -28,7 +30,7 @@ public class RoleEntity implements Serializable {
   @ManyToMany(mappedBy = "roles") // mapped by roles field from UserEntity class
   private Collection<UserEntity> users;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+  @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
   @JoinTable(
           name = "roles_authorities",
           joinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"),

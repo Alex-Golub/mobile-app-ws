@@ -1,7 +1,6 @@
 package edu.mrdrprof.app.ws.io.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +14,9 @@ import java.util.Collection;
 @Table(name = "authorities")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthorityEntity implements Serializable {
   private static final long serialVersionUID = -6824743375201714785L;
 

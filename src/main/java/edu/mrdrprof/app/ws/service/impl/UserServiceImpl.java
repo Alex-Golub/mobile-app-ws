@@ -4,6 +4,7 @@ import edu.mrdrprof.app.ws.ApplicationProperties;
 import edu.mrdrprof.app.ws.exceptions.UserServiceException;
 import edu.mrdrprof.app.ws.io.entity.UserEntity;
 import edu.mrdrprof.app.ws.repository.UserRepository;
+import edu.mrdrprof.app.ws.security.UserPrincipal;
 import edu.mrdrprof.app.ws.service.UserService;
 import edu.mrdrprof.app.ws.shared.Utils;
 import edu.mrdrprof.app.ws.shared.dto.AddressDto;
@@ -11,13 +12,11 @@ import edu.mrdrprof.app.ws.shared.dto.UserDto;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -137,8 +136,6 @@ public class UserServiceImpl implements UserService {
       throw new UsernameNotFoundException("There is no such user with email " + email);
     }
 
-    return new User(userEntity.getEmail(),
-                    userEntity.getEncryptedPassword(),
-                    new ArrayList<>());
+    return new UserPrincipal(userEntity);
   }
 }
