@@ -26,6 +26,8 @@
 - ✅ [Security](https://docs.spring.io/spring-security/site/docs/5.4.5/reference/html5/)
   - Authentication
   - Authorization
+  - Roles and Authorities
+  - Method and Global level security
 - ✅ `JWT`
   - [jjwt](https://github.com/jwtk/jjwt)
   - [jwt.io](https://jwt.io/)

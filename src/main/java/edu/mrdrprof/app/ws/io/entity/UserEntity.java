@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -51,6 +52,15 @@ public class UserEntity implements Serializable {
    * one user can have many addresses.
    * This column is mapped-by AddressEntity userDetails field.
    */
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "userDetails", cascade = CascadeType.ALL)
+  @OneToMany(/*fetch = FetchType.EAGER,*/ mappedBy = "userDetails", cascade = CascadeType.ALL)
   private List<AddressEntity> addresses;
+
+  @ManyToMany(fetch = FetchType.EAGER,       // once user read from db set roles right away
+              cascade = CascadeType.PERSIST) // dont cascade all operation when userEntity deleted
+  @JoinTable(
+          name = "users_roles",
+          joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
+          inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id")
+  )
+  private Collection<RoleEntity> roles;
 }
