@@ -64,7 +64,7 @@ public class InitialUserSetup {
             .email("admin@admin.com")
             .emailVerificationStatus(true)
             .userId(utils.generateRandomString(PASS_ID_LENGTH))
-            .encryptedPassword(bCryptPasswordEncoder.encode("hjgjhvhg66e5489"))
+            .encryptedPassword(bCryptPasswordEncoder.encode("4321"))
             .roles(List.of(admin))
             .build();
   }

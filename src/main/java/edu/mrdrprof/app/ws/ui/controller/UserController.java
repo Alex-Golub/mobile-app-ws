@@ -16,6 +16,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -58,6 +60,7 @@ public class UserController {
    * Get user by userId endpoint => http://localhost:{port#}/{context-path}/users/{userId}
    * Enable method level CORS with specified domains to get response from this method
    */
+  @PostAuthorize(value = "hasRole('ADMIN') or returnObject.userId == principal.userId") // method executes first and then security expression evaluated
   @ApiOperation(value = "Get specific user",
                 notes = "${userController.getUser}")
   @ApiImplicitParam(name = "Authorization",
@@ -177,12 +180,14 @@ public class UserController {
    * Delete user entry by providing userId
    * http://localhost:{port#}/{context-path}/users/{userId}
    */
+//  @Secured(value = "ROLE_ADMIN") // method can be invoked only if current principal has ROLE_ADMIN
+//  @PreAuthorize(value = "hasRole('ADMIN')") // spring auto. add ROLE_ prefix
+  @PreAuthorize(value = "hasRole('ADMIN') or #userId == principal.userId")
   @ApiImplicitParam(name = "Authorization",
                     value = "${userController.authorization.description}",
                     paramType = "header",
                     required = true)
   @DeleteMapping(path = "/{userId}")
-  @Secured(value = "ROLE_ADMIN") // method can be invoked only if current principal has ROLE_ADMIN
   public OperationRequestModel deleteUser(@PathVariable String userId) {
     OperationRequestModel operationRequestModel = new OperationRequestModel();
     userService.deleteUser(userId);

@@ -27,7 +27,8 @@ import java.util.List;
  * @author Mr.Dr.Professor
  * @since 20/03/2021 18:31
  */
-@EnableGlobalMethodSecurity(securedEnabled = true) // selectively enable security annotations
+@EnableGlobalMethodSecurity(securedEnabled = true,
+                            prePostEnabled = true) // selectively enable security annotations
 @EnableWebSecurity
 @AllArgsConstructor
 public class WebSecurity extends WebSecurityConfigurerAdapter {

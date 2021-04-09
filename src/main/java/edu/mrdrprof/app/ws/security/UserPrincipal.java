@@ -16,10 +16,15 @@ import java.util.List;
  * @author Alex Golub
  * @since 06-Apr-21 6:56 PM
  */
-@AllArgsConstructor
 public class UserPrincipal implements UserDetails {
   private static final long serialVersionUID = -2672354501180630076L;
   private final UserEntity userEntity;
+  private final String userId; // public userId
+
+  public UserPrincipal(UserEntity userEntity) {
+    this.userEntity = userEntity;
+    this.userId = userEntity.getUserId();
+  }
 
   /**
    * Return a collection of all roles and authorities for this
@@ -78,5 +83,9 @@ public class UserPrincipal implements UserDetails {
     // NB: email verification functionality is not implemented (Amazon $$$)
 //    return userEntity.isEmailVerificationStatus();
     return true;
+  }
+
+  public String getUserId() {
+    return userId;
   }
 }

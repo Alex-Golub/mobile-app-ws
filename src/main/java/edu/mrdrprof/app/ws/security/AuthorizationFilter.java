@@ -49,7 +49,8 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
     UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
 
-    // place authentication token for this user into SecurityContextHolder
+    // place current user principal object to allow access from security
+    // method/global annotations when using security expressions
     SecurityContextHolder.getContext().setAuthentication(authentication);
     chain.doFilter(request, response);
   }
@@ -71,8 +72,12 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
       if (email != null) {
         UserEntity userEntity = userRepository.findUserEntityByEmail(email);
+        if (userEntity == null) {
+          return null;
+        }
+
         UserPrincipal userPrincipal = new UserPrincipal(userEntity);
-        return new UsernamePasswordAuthenticationToken(email,
+        return new UsernamePasswordAuthenticationToken(userPrincipal, // add userPrincipal object rather then only email
                                                        null,
                                                        userPrincipal.getAuthorities());
       }
