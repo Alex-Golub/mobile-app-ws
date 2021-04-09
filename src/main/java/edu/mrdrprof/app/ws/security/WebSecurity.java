@@ -1,5 +1,6 @@
 package edu.mrdrprof.app.ws.security;
 
+import edu.mrdrprof.app.ws.repository.UserRepository;
 import edu.mrdrprof.app.ws.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,7 @@ import java.util.List;
 public class WebSecurity extends WebSecurityConfigurerAdapter {
   private final UserService userService;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final UserRepository userRepository;
 
   /**
    * Configure which entry points will be permitted,
@@ -50,11 +52,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
               .permitAll()
             .mvcMatchers("/v2/api-docs", "configuration/**", "/swagger*/**", "/webjars/**")
               .permitAll()
+            .mvcMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+//            .mvcMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("DELETE_AUTHORITY")
             .anyRequest()
             .authenticated()
             .and()
             .addFilter(authenticationFilter())
-            .addFilter(new AuthorizationFilter(authenticationManager()))
+            .addFilter(new AuthorizationFilter(authenticationManager(), userRepository))
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

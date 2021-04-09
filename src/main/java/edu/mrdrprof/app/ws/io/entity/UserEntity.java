@@ -1,6 +1,10 @@
 package edu.mrdrprof.app.ws.io.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -53,10 +57,12 @@ public class UserEntity implements Serializable {
    * This column is mapped-by AddressEntity userDetails field.
    */
   @OneToMany(/*fetch = FetchType.EAGER,*/ mappedBy = "userDetails", cascade = CascadeType.ALL)
+  @LazyCollection(LazyCollectionOption.FALSE)
   private List<AddressEntity> addresses;
 
-  @ManyToMany(fetch = FetchType.EAGER,       // once user read from db set roles right away
+  @ManyToMany(/*fetch = FetchType.EAGER,*/       // once user read from db set roles right away
               cascade = CascadeType.PERSIST) // dont cascade all operation when userEntity deleted
+  @LazyCollection(LazyCollectionOption.FALSE)
   @JoinTable(
           name = "users_roles",
           joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),

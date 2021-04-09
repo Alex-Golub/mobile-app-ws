@@ -1,6 +1,9 @@
 package edu.mrdrprof.app.ws.security;
 
+import edu.mrdrprof.app.ws.io.entity.UserEntity;
+import edu.mrdrprof.app.ws.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,8 +23,12 @@ import java.util.ArrayList;
  * @since 3/21/2021 2:58 PM
  */
 public class AuthorizationFilter extends BasicAuthenticationFilter {
-  public AuthorizationFilter(AuthenticationManager authenticationManager) {
+  private final UserRepository userRepository;
+
+  public AuthorizationFilter(AuthenticationManager authenticationManager,
+                             UserRepository userRepository) {
     super(authenticationManager);
+    this.userRepository = userRepository;
   }
 
   /**
@@ -56,14 +63,18 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
     if (header != null) {
       String token = header.replace(SecurityConstants.TOKEN_PREFIX, "");
-      String principal = Jwts.parser()
+      String email = Jwts.parser()
               .setSigningKey(SecurityConstants.getTokenSecret())
               .parseClaimsJws(token)
               .getBody()
               .getSubject();
 
-      if (principal != null) {
-        return new UsernamePasswordAuthenticationToken(principal, null, new ArrayList<>());
+      if (email != null) {
+        UserEntity userEntity = userRepository.findUserEntityByEmail(email);
+        UserPrincipal userPrincipal = new UserPrincipal(userEntity);
+        return new UsernamePasswordAuthenticationToken(email,
+                                                       null,
+                                                       userPrincipal.getAuthorities());
       }
     }
 
