@@ -1,0 +1,331 @@
+{
+	"info": {
+		"_postman_id": "42d2b390-6019-42b5-8a23-274e2e0c39d0",
+		"name": "RESTful WebService Course",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create user",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstName\": \"jasdsad\",\r\n  \"lastName\": \"Molashkin\",\r\n  \"email\": \"fgsdfgdf@email.com\",\r\n  \"password\": \"1234\",\r\n  \"addresses\": [\r\n    {\r\n      \"city\": \"Tel-Aviv\",\r\n      \"country\": \"Israel\",\r\n      \"streetName\": \"123 Street name\",\r\n      \"postalCode\": \"abc123\",\r\n      \"type\": \"billing\"\r\n    },\r\n    {\r\n      \"city\": \"Haifa\",\r\n      \"country\": \"Israel\",\r\n      \"streetName\": \"321 Jump Street\",\r\n      \"postalCode\": \"123abc\",\r\n      \"type\": \"shipping\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/restful-ws/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restful-ws",
+						"users"
+					]
+				},
+				"description": "Create new user"
+			},
+			"response": []
+		},
+		{
+			"name": "Get user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjNxcXdAZW1haWwuY29tIiwiZXhwIjoxNjE2OTI5NDg0fQ.dKGg-zJe6yxWnJezbbhWXnd-tthJE7JD3rh3IRRz3WlVepT4GbZCfOv86ulNOhGAWVl8IABlcSTQl9g5B_REPQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/restful-ws/users/DetKuQokR8ul28ZI4yMfvFKqcvJwxI",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restful-ws",
+						"users",
+						"DetKuQokR8ul28ZI4yMfvFKqcvJwxI"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Sign-in",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"123qqw@email.com\",\r\n  \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/restful-ws/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restful-ws",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user details",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjNxcXdAZW1haWwuY29tIiwiZXhwIjoxNjE2OTM4MTI4fQ.OqffAfatkRQgfJtkyCMvu8Z7-YtH5YIQDTxUTpIk0dj0karuIqzXxictME7t5Q-EdoaRbamRgLPUN0Th6fk0NA",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstName\": \"Baba\",\r\n  \"lastName\": \"Developer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/restful-ws/users/DetKuQokR8ul28ZI4yMfvFKqcvJwxI",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restful-ws",
+						"users",
+						"DetKuQokR8ul28ZI4yMfvFKqcvJwxI"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user by userID",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huX2RvZUBlbWFpbC5jb20iLCJleHAiOjE2MTY1ODU2OTR9.03bzErmF7i60ZAYTiLZnmaIiIhvMTGrExbC_ZlF5bsK0z880E0DqL7-wi0IwYbt49AxN8RxiqZBd8d_dhhqW1w",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/restful-ws/users/93TDaGUtrN8aQZmOUWdQ3MsWmbBlpC",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restful-ws",
+						"users",
+						"93TDaGUtrN8aQZmOUWdQ3MsWmbBlpC"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjNxcXdAZW1haWwuY29tIiwiZXhwIjoxNjE2OTI5NDg0fQ.dKGg-zJe6yxWnJezbbhWXnd-tthJE7JD3rh3IRRz3WlVepT4GbZCfOv86ulNOhGAWVl8IABlcSTQl9g5B_REPQ",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/restful-ws/users?page=1&limit=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restful-ws",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1",
+							"description": "{page} number"
+						},
+						{
+							"key": "limit",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get list of addresses",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjNxcXdAZW1haWwuY29tIiwiZXhwIjoxNjE3MTE4MjMwfQ.LFXNZVgzV0Pi-u2PtHFvs6jBzq-jb_5aXvCpJ1DUfjSoIbSccwiiaeYcAnJIqoD2Ac6jCaA_OfFmWrFltekwJg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/restful-ws/users/DetKuQokR8ul28ZI4yMfvFKqcvJwxI/addresses",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restful-ws",
+						"users",
+						"DetKuQokR8ul28ZI4yMfvFKqcvJwxI",
+						"addresses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user address by addressId",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjNxcXdAZW1haWwuY29tIiwiZXhwIjoxNjE3MTE4MjMwfQ.LFXNZVgzV0Pi-u2PtHFvs6jBzq-jb_5aXvCpJ1DUfjSoIbSccwiiaeYcAnJIqoD2Ac6jCaA_OfFmWrFltekwJg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/restful-ws/users/DetKuQokR8ul28ZI4yMfvFKqcvJwxI/addresses/w4E56nmLE03df2HSUMHz8G4Yi4Bk27",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restful-ws",
+						"users",
+						"DetKuQokR8ul28ZI4yMfvFKqcvJwxI",
+						"addresses",
+						"w4E56nmLE03df2HSUMHz8G4Yi4Bk27"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

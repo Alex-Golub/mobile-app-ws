@@ -7,8 +7,9 @@
   </a>
 </p>
 <p align="center">
-<img src="https://img.shields.io/badge/Status-In Progress-blue.svg" />
-  <img src="https://img.shields.io/badge/Made%20With-Spring-green.svg" />
+  <img src="https://img.shields.io/badge/Status-Completed-blue?style=for-the-badge" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/Made%20With-Spring-green.svg?style=for-the-badge" />
 </p>
 
 ### Tools and Projects used (see commits for detailed progress):
@@ -54,3 +55,5 @@
 - ✅ [Swagger](https://swagger.io/) - generate api documentation using user-friendly GUI
   - [SpringFox](https://springfox.github.io/springfox/docs/current/)
   - [SwaggerHub](https://swagger.io/tools/swaggerhub/) - allow share/collaborate endpoints documentation
+  
+### Next step is to convert current monolithic build into microservices architecture
