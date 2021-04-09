@@ -6,6 +6,7 @@ import edu.mrdrprof.app.ws.io.entity.UserEntity;
 import edu.mrdrprof.app.ws.repository.AuthorityRepository;
 import edu.mrdrprof.app.ws.repository.RoleRepository;
 import edu.mrdrprof.app.ws.repository.UserRepository;
+import edu.mrdrprof.app.ws.shared.Roles;
 import edu.mrdrprof.app.ws.shared.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -46,8 +47,8 @@ public class InitialUserSetup {
     AuthorityEntity write = getAuthorityEntity("WRITE_AUTHORITY");
     AuthorityEntity delete = getAuthorityEntity("DELETE_AUTHORITY");
 
-    RoleEntity roleUser = getRole("ROLE_USER", Arrays.asList(read, write));
-    RoleEntity roleAdmin = getRole("ROLE_ADMIN", Arrays.asList(read, write, delete));
+    RoleEntity roleUser = getRole(Roles.ROLE_USER.toString(), Arrays.asList(read, write));
+    RoleEntity roleAdmin = getRole(Roles.ROLE_ADMIN.toString(), Arrays.asList(read, write, delete));
 
     if (roleAdmin == null) {
       return;
@@ -81,12 +82,12 @@ public class InitialUserSetup {
     return authorityEntity;
   }
 
-  private RoleEntity getRole(String name, Collection<AuthorityEntity> authorities) {
+  private RoleEntity getRole(String role, Collection<AuthorityEntity> authorities) {
     // first check if such role exists in roleRepository
-    RoleEntity roleEntity = roleRepository.findByName(name);
+    RoleEntity roleEntity = roleRepository.findByName(role);
     if (roleEntity == null) {
       roleEntity = RoleEntity.builder()
-              .name(name)
+              .name(role)
               .authorities(authorities)
               .build();
 

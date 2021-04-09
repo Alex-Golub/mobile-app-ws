@@ -2,7 +2,9 @@ package edu.mrdrprof.app.ws.service.impl;
 
 import edu.mrdrprof.app.ws.ApplicationProperties;
 import edu.mrdrprof.app.ws.exceptions.UserServiceException;
+import edu.mrdrprof.app.ws.io.entity.RoleEntity;
 import edu.mrdrprof.app.ws.io.entity.UserEntity;
+import edu.mrdrprof.app.ws.repository.RoleRepository;
 import edu.mrdrprof.app.ws.repository.UserRepository;
 import edu.mrdrprof.app.ws.security.UserPrincipal;
 import edu.mrdrprof.app.ws.service.UserService;
@@ -17,6 +19,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +33,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
   private static final int ID_LENGTH = 30;
   private final UserRepository userRepository;
+  private final RoleRepository roleRepository;
   private final Utils utils;
   private final BCryptPasswordEncoder passwordEncoder;
   private final ApplicationProperties applicationProperties;
@@ -50,8 +55,18 @@ public class UserServiceImpl implements UserService {
     userDto.setUserId(utils.generateRandomString(ID_LENGTH));
     userDto.setEncryptedPassword(passwordEncoder.encode(userDto.getPassword()));
 
+    // Set user roles
+    Collection<RoleEntity> roleEntityCollection = new HashSet<>();
+    for (String role : userDto.getRoles()) {
+      RoleEntity roleEntity = roleRepository.findByName(role);
+      if (roleEntity != null) {
+        roleEntityCollection.add(roleEntity);
+      }
+    }
+
     ModelMapper modelMapper = new ModelMapper();
     UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
+    userEntity.setRoles(roleEntityCollection);
 
     return modelMapper.map(userRepository.save(userEntity),
                            UserDto.class);

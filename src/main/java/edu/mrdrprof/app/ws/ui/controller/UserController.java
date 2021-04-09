@@ -2,6 +2,7 @@ package edu.mrdrprof.app.ws.ui.controller;
 
 import edu.mrdrprof.app.ws.service.AddressService;
 import edu.mrdrprof.app.ws.service.UserService;
+import edu.mrdrprof.app.ws.shared.Roles;
 import edu.mrdrprof.app.ws.shared.dto.UserDto;
 import edu.mrdrprof.app.ws.ui.model.request.UserDetailsRequestModel;
 import edu.mrdrprof.app.ws.ui.model.request.UserUpdateRequestModel;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -155,8 +158,10 @@ public class UserController {
   @PostMapping(consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
                produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
   public UserRest createUser(@Valid @RequestBody UserDetailsRequestModel userDetails) {
-    return modelMapper.map(userService.createUser(modelMapper.map(userDetails, UserDto.class)),
-                           UserRest.class);
+    UserDto userDto = modelMapper.map(userDetails, UserDto.class);
+    userDto.setRoles(new HashSet<>(Collections.singletonList(Roles.ROLE_USER.toString())));
+
+    return modelMapper.map(userService.createUser(userDto), UserRest.class);
   }
 
   /**

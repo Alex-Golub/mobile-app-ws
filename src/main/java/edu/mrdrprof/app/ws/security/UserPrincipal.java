@@ -3,14 +3,12 @@ package edu.mrdrprof.app.ws.security;
 import edu.mrdrprof.app.ws.io.entity.AuthorityEntity;
 import edu.mrdrprof.app.ws.io.entity.RoleEntity;
 import edu.mrdrprof.app.ws.io.entity.UserEntity;
-import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 
 /**
  * @author Alex Golub
@@ -32,8 +30,9 @@ public class UserPrincipal implements UserDetails {
    */
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    List<GrantedAuthority> authorities = new ArrayList<>();
-    List<AuthorityEntity> authorityEntities = new ArrayList<>();
+    // users roles and authorities should be unique thus using Set collection
+    Collection<GrantedAuthority> authorities = new HashSet<>();
+    Collection<AuthorityEntity> authorityEntities = new HashSet<>();
 
     Collection<RoleEntity> userEntityRoles = userEntity.getRoles();
     if (userEntityRoles == null) {

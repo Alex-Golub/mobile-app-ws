@@ -3,6 +3,7 @@ package edu.mrdrprof.app.ws.shared.dto;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,4 +30,5 @@ public class UserDto implements Serializable {
   private String emailVerificationToken;
   private boolean emailVerificationStatus = false;
   private List<AddressDto> addresses;
+  private Collection<String> roles;
 }
