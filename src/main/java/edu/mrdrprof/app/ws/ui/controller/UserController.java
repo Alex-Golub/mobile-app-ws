@@ -15,6 +15,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -181,6 +182,7 @@ public class UserController {
                     paramType = "header",
                     required = true)
   @DeleteMapping(path = "/{userId}")
+  @Secured(value = "ROLE_ADMIN") // method can be invoked only if current principal has ROLE_ADMIN
   public OperationRequestModel deleteUser(@PathVariable String userId) {
     OperationRequestModel operationRequestModel = new OperationRequestModel();
     userService.deleteUser(userId);

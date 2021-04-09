@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -26,6 +27,7 @@ import java.util.List;
  * @author Mr.Dr.Professor
  * @since 20/03/2021 18:31
  */
+@EnableGlobalMethodSecurity(securedEnabled = true) // selectively enable security annotations
 @EnableWebSecurity
 @AllArgsConstructor
 public class WebSecurity extends WebSecurityConfigurerAdapter {
@@ -52,7 +54,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
               .permitAll()
             .mvcMatchers("/v2/api-docs", "configuration/**", "/swagger*/**", "/webjars/**")
               .permitAll()
-            .mvcMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+//            .mvcMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 //            .mvcMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("DELETE_AUTHORITY")
             .anyRequest()
             .authenticated()
